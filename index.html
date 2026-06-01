@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rahadian Nugraha — Content Creator & Copywriter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Michroma:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Syne+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f4f1ec;
+    --cream: #e8e3d9;
+    --grey: #6b6560;
+    --accent: #c8a97e;
+    --accent-dark: #8a6f4e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Syne Mono', monospace;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: difference;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(200,169,126,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(200,169,126,0.04) 0%, transparent 60%);
+  }
+
+  .hero-noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.3s;
+  }
+
+  .hero-name {
+    font-family: 'Michroma', sans-sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.5s;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.9s;
+  }
+
+  .hero-desc {
+    max-width: 380px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--grey);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    text-align: right;
+  }
+
+  .stat-num {
+    font-family: 'Michroma', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1.3s;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 120px 48px;
+    position: relative;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Michroma', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 64px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(200,169,126,0.3), transparent);
+  }
+
+  /* ABOUT */
+  .about {
+    background: var(--black);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-text {
+    font-size: 15px;
+    line-height: 2;
+    color: var(--grey);
+  }
+
+  .about-text p + p { margin-top: 24px; }
+
+  .about-text strong {
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .skill-item {
+    padding: 20px 24px;
+    border: 1px solid rgba(200,169,126,0.1);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(200,169,126,0.05);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .skill-item:hover::before { transform: scaleX(1); }
+  .skill-item:hover { color: var(--accent); border-color: rgba(200,169,126,0.3); }
+
+  /* EXPERIENCE */
+  .experience {
+    background: #0e0d0c;
+  }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 64px;
+    padding: 48px 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+  }
+
+  .exp-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+  .exp-meta {
+    padding-top: 4px;
+  }
+
+  .exp-company {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .exp-period {
+    font-size: 12px;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  .exp-role {
+    font-family: 'Michroma', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .exp-desc {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--grey);
+    margin-bottom: 24px;
+  }
+
+  .exp-achievements {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .exp-achievements li {
+    font-size: 12px;
+    color: var(--grey);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .exp-achievements li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .exp-achievements li strong {
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  /* WORK */
+  .work {
+    background: var(--black);
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+
+  .work-item {
+    position: relative;
+    padding: 48px;
+    border: 1px solid rgba(255,255,255,0.04);
+    overflow: hidden;
+    transition: border-color 0.4s;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .work-item:hover { border-color: rgba(200,169,126,0.2); }
+
+  .work-item-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(200,169,126,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .work-item:hover .work-item-bg { opacity: 1; }
+
+  .work-num {
+    font-family: 'Michroma', sans-serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: rgba(200,169,126,0.08);
+    line-height: 1;
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    transition: color 0.4s;
+  }
+
+  .work-item:hover .work-num { color: rgba(200,169,126,0.15); }
+
+  .work-tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .work-title {
+    font-family: 'Michroma', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .work-desc {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--grey);
+    flex-grow: 1;
+    margin-bottom: 24px;
+  }
+
+  .work-metrics {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .metric {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+    padding: 6px 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .metric strong {
+    color: var(--white);
+    font-weight: 400;
+    display: block;
+    font-size: 14px;
+    letter-spacing: 0;
+    margin-bottom: 2px;
+  }
+
+  /* FEATURED */
+  .work-item.featured {
+    grid-column: span 2;
+    min-height: 200px;
+    flex-direction: row;
+    align-items: center;
+    gap: 80px;
+  }
+
+  .work-item.featured .work-content { flex: 1; }
+  .work-item.featured .work-metrics-large {
+    display: flex;
+    gap: 48px;
+    flex-shrink: 0;
+  }
+
+  .metric-large {
+    text-align: center;
+  }
+
+  .metric-large .num {
+    font-family: 'Michroma', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .metric-large .label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  /* CONTACT */
+  .contact {
+    background: #0e0d0c;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .contact-headline {
+    font-family: 'Michroma', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .contact-headline em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .contact-link-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .contact-link-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .contact-link-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .contact-link-value {
+    font-size: 15px;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-family: 'Syne Mono', monospace;
+  }
+
+  .contact-link-value:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  footer p {
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.1em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* HORIZONTAL MARQUEE */
+  .marquee-wrap {
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 16px 0;
+    margin: 0;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: rgba(200,169,126,0.3);
+    padding: 0 48px;
+    flex-shrink: 0;
+  }
+
+  .marquee-item span {
+    color: rgba(200,169,126,0.6);
+    margin: 0 16px;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .hero { padding: 0 24px 60px; }
+    .hero-bottom { flex-direction: column; gap: 32px; align-items: flex-start; }
+    .hero-stats { flex-direction: row; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .exp-item { grid-template-columns: 1fr; gap: 24px; }
+    .work-grid { grid-template-columns: 1fr; }
+    .work-item.featured { grid-column: span 1; flex-direction: column; gap: 32px; }
+    .work-item.featured .work-metrics-large { justify-content: flex-start; }
+    .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">RN</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-tag">Content Creator &amp; Copywriter — Bandung, Indonesia</div>
+  <h1 class="hero-name">Rahadian<br><em>Nugraha</em></h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      I write copy that grabs attention and make content that keeping it up, across national campaigns, short-form video, and brand storytelling.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">1M+</span>
+        <span class="stat-label">Organic Views</span>
+      </div>
+      <div>
+        <span class="stat-num">2yr</span>
+        <span class="stat-label">Agency Experience</span>
+      </div>
+      <div>
+        <span class="stat-num">US</span>
+        <span class="stat-label">Primary Audience</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Content Writing <span>✦</span> Copywriting <span>✦</span> Social Media Strategy <span>✦</span> Short-Form Video <span>✦</span> Scriptwriting <span>✦</span> SEO Writing <span>✦</span> Brand Storytelling <span>✦</span> Fashion &amp; Culture <span>✦</span></div>
+    <div class="marquee-item">Content Writing <span>✦</span> Copywriting <span>✦</span> Social Media Strategy <span>✦</span> Short-Form Video <span>✦</span> Scriptwriting <span>✦</span> SEO Writing <span>✦</span> Brand Storytelling <span>✦</span> Fashion &amp; Culture <span>✦</span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div>
+      <p class="section-label reveal">About</p>
+      <h2 class="section-title reveal reveal-delay-1">Thinking in<br><em style="font-family:'Michroma',sans-serif;font-style:italic;color:var(--accent)">stories,</em><br>writing in results.</h2>
+      <div class="about-text reveal reveal-delay-2">
+        <p>I'm a content creator and copywriter with two years of professional agency experience writing for <strong>Wonderful Indonesia</strong>, the country's most recognised national tourism campaign, as well as three years building an independent account from scratch.</p>
+        <p>My editorial instincts come from archive fashion, music subculture, and taste-driven research. My copy skills come from deadline pressure, SEO briefs, and the discipline of writing <strong>4–5 long-form articles a week</strong> for international audience.</p>
+        <p>My independent account @ragareviera is English-language and internationally distributed — with <strong>organically strong U.S. reach</strong> and recognition from established creators in the fashion space.</p>
+      </div>
+    </div>
+    <div>
+      <p class="section-label reveal" style="margin-bottom:24px;">Capabilities</p>
+      <div class="skills-grid reveal reveal-delay-1">
+        <div class="skill-item">Content Writing</div>
+        <div class="skill-item">Copywriting</div>
+        <div class="skill-item">Social Media Strategy</div>
+        <div class="skill-item">Scriptwriting</div>
+        <div class="skill-item">SEO Writing</div>
+        <div class="skill-item">Short-Form Video</div>
+        <div class="skill-item">Brand Storytelling</div>
+        <div class="skill-item">Content Research</div>
+        <div class="skill-item">CapCut & Canva</div>
+        <div class="skill-item">Fashion & Culture</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <p class="section-label reveal">Experience</p>
+  <h2 class="section-title reveal reveal-delay-1">Where I've<br>done the work.</h2>
+
+  <div class="exp-item reveal">
+    <div class="exp-meta">
+      <p class="exp-company">Titik Terang Creative Agency</p>
+      <p class="exp-period">Aug 2021 — Feb 2023<br>Content Writer</p>
+    </div>
+    <div class="exp-content">
+      <h3 class="exp-role">Wonderful Indonesia Campaign</h3>
+      <p class="exp-desc">Embedded writer for Indonesia's national government tourism brand, producing high-volume content across articles, social media copy, video campaign scripts, and e-booklet guides under tight weekly deadlines.</p>
+      <ul class="exp-achievements">
+        <li>Wrote and edited <strong>4–5 long-form articles per week</strong> for the official Wonderful Indonesia website, covering news, destination guides, and travel listicles.</li>
+        <li>Produced <strong>15–20 social media captions per week</strong> for Instagram and Twitter, calibrated to platform-specific tone and audience behaviour.</li>
+        <li>Improved Instagram &amp; Twitter engagement <strong>2% month-over-month</strong> through stronger hooks and optimised storytelling structure.</li>
+        <li>Applied SEO best practices across all articles, natural keyword placement, clear structure, and alignment with provided briefs.</li>
+        <li>Wrote copy for the <strong>World Textile Day video campaign</strong>, translating centuries of Indonesian textile tradition into accessible, vivid video captions.</li>
+        <li>Worked on three <strong>Wonderful Indonesia e-booklets</strong> targeting romantic, adventure, and family tourism segments.</li>
+        <li>Collaborated with designers and strategists to ensure content aligned with campaign concepts and brand direction.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-meta">
+      <p class="exp-company">@ragareviera</p>
+      <p class="exp-period">Jul 2023 — Present<br>Independent Content Creator</p>
+    </div>
+    <div class="exp-content">
+      <h3 class="exp-role">Fashion &amp; Culture, English-Language</h3>
+      <p class="exp-desc">Independently produce, script, shoot, and edit fashion and culture content for an international audience, with full creative and strategic ownership across TikTok, Instagram and YouTube.</p>
+      <ul class="exp-achievements">
+        <li>Created a viral video with <strong>1,000,000+ organic views</strong>, generating significant account growth and recognition from established creators in the fashion space.</li>
+        <li>Developed the <strong>Hidden Gems series</strong> — 40–45 second scripted videos profiling overlooked designers, brands, and cultural figures.</li>
+        <li>Built an audience with <strong>organically strong U.S. representation</strong> through niche-focused, research-driven English-language content.</li>
+        <li>Secured brand collaboration with <strong>PLASTICPRODUCT (South Korea)</strong>, first gifted partnership, developing a creative strategy grounded in the brand's dystopian aesthetic identity.</li>
+        <li>Maintains consistent <strong>three videos per week</strong> cadence across short-form platforms with occasional long-form YouTube uploads.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <p class="section-label reveal">Selected Work</p>
+  <h2 class="section-title reveal reveal-delay-1">The work<br>itself.</h2>
+
+  <div class="work-grid">
+
+    <!-- Featured -->
+    <div class="work-item featured reveal">
+      <div class="work-item-bg"></div>
+      <div class="work-content">
+        <p class="work-tag">Independent — TikTok</p>
+        <h3 class="work-title">Style Breakdown: G-Dragon</h3>
+        <p class="work-desc">Researched each era of G-Dragon's career and the brands he wore, distilling a decade of looks into a 38-second talking-to-camera breakdown. The direct precursor to the Hidden Gems series format.</p>
+      </div>
+      <div class="work-metrics-large">
+        <div class="metric-large">
+          <span class="num">1M+</span>
+          <span class="label">Views</span>
+        </div>
+        <div class="metric-large">
+          <span class="num">15K</span>
+          <span class="label">Likes</span>
+        </div>
+        <div class="metric-large">
+          <span class="num">245</span>
+          <span class="label">New Followers</span>
+        </div>
+      </div>
+      <div class="work-num">01</div>
+    </div>
+
+    <div class="work-item reveal">
+      <div class="work-item-bg"></div>
+      <div class="work-num">02</div>
+      <div>
+        <p class="work-tag">Wonderful Indonesia — Articles</p>
+        <h3 class="work-title">National Tourism Content</h3>
+        <p class="work-desc">Long-form articles and SEO content for Indonesia's official government tourism brand, covering news, destination guides, travel regulations, and event coverage. Output: 4–5 articles per week for over a year.</p>
+        <div class="work-metrics">
+          <div class="metric"><strong>200+</strong>Articles Written</div>
+          <div class="metric"><strong>National</strong>Scale</div>
+          <div class="metric"><strong>SEO</strong>Optimised</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-item reveal reveal-delay-1">
+      <div class="work-item-bg"></div>
+      <div class="work-num">03</div>
+      <div>
+        <p class="work-tag">Wonderful Indonesia — Social Copy</p>
+        <h3 class="work-title">Instagram &amp; Twitter Captions</h3>
+        <p class="work-desc">Platform-calibrated social copy for Wonderful Indonesia's official channels, 15–20 pieces per week, driving a consistent 2% month-over-month engagement lift through stronger hooks and narrative structure.</p>
+        <div class="work-metrics">
+          <div class="metric"><strong>+2%</strong>MoM Engagement</div>
+          <div class="metric"><strong>15–20</strong>Pieces/Week</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-item reveal">
+      <div class="work-item-bg"></div>
+      <div class="work-num">04</div>
+      <div>
+        <p class="work-tag">Independent — Series</p>
+        <h3 class="work-title">Hidden Gems Series</h3>
+        <p class="work-desc">A scripted short-form series profiling underrated designers, brands, and cultural figures, from Mario Balotelli's street style to Ville Valo's gothic aesthetic. Each episode: 40–45 seconds, talking-to-camera with visual overlays.</p>
+        <div class="work-metrics">
+          <div class="metric"><strong>11</strong>Scripts Done</div>
+          <div class="metric"><strong>~29</strong>Total Planned</div>
+          <div class="metric"><strong>EN</strong>Language</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-item reveal reveal-delay-1">
+      <div class="work-item-bg"></div>
+      <div class="work-num">05</div>
+      <div>
+        <p class="work-tag">Wonderful Indonesia — Campaign</p>
+        <h3 class="work-title">World Textile Day &amp; E-Booklets</h3>
+        <p class="work-desc">Video campaign copy for "Delve Into the Intricate Beauty of Indonesian Textiles" — translating batik, songket, ikat, and gringsing for a modern digital audience. Plus three destination e-booklets targeting romantic, adventure, and family tourism segments.</p>
+        <div class="work-metrics">
+          <div class="metric"><strong>3</strong>E-Booklets</div>
+          <div class="metric"><strong>Video</strong>Campaign</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-item reveal">
+      <div class="work-item-bg"></div>
+      <div class="work-num">06</div>
+      <div>
+        <p class="work-tag">Brand Collaboration</p>
+        <h3 class="work-title">PLASTICPRODUCT (South Korea)</h3>
+        <p class="work-desc">First gifted brand collaboration, developing a creative strategy grounded in the brand's dystopian aesthetic: a captcha welcome page, Google Maps Street View campaign, and experimental objects. Content centered on the MPa Suede Big Bag.</p>
+        <div class="work-metrics">
+          <div class="metric"><strong>Seoul</strong>Brand</div>
+          <div class="metric"><strong>Gifted</strong>Collab</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <h2 class="contact-headline">Let's<br>work<br><em>together.</em></h2>
+    </div>
+    <div class="contact-links reveal reveal-delay-2">
+      <div class="contact-link-item">
+        <span class="contact-link-label">Email</span>
+        <a href="mailto:rahadian.nugraha77@gmail.com" class="contact-link-value">rahadian.nugraha77@gmail.com</a>
+      </div>
+      <div class="contact-link-item">
+        <span class="contact-link-label">LinkedIn</span>
+        <a href="https://linkedin.com/in/rahadiannugraha/" target="_blank" class="contact-link-value">linkedin.com/in/rahadiannugraha</a>
+      </div>
+      <div class="contact-link-item">
+        <span class="contact-link-label">Content Channel</span>
+        <a href="https://tiktok.com/@ragareviera" target="_blank" class="contact-link-value">@ragareviera</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Rahadian Nugraha — Bandung, Indonesia</p>
+  <p>© 2026</p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 4 + 'px';
+    cursor.style.top = my - 4 + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx - 16 + 'px';
+    ring.style.top = ry - 16 + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button, .skill-item, .work-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2.5)';
+      ring.style.transform = 'scale(1.5)';
+      ring.style.opacity = '1';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.transform = 'scale(1)';
+      ring.style.opacity = '0.6';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
